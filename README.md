@@ -1,2 +1,7 @@
-# mindustry-bleeding-edge-launcher
-Launcher and updater for Mindustry Bleeding edge
+
+This script will fetch JSON data from url below:
+
+```
+https://api.github.com/repos/anuken/mindustrybuilds/releases/latest
+```
+
