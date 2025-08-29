@@ -1,6 +1,6 @@
 import requests
 from tqdm import tqdm
-import os, subprocess
+import os, subprocess, time
 
 url = "https://api.github.com/repos/anuken/mindustrybuilds/releases/latest"
 response = requests.get(url)
@@ -15,7 +15,6 @@ nama_file_mindustry_skrang = [f for f in os.listdir() if "Mindustry-BE-Desktop" 
 
 if nama_tag in nama_file_mindustry_skrang[0]:
     print("file skarang paling baru, langsung gas bng")
-    subprocess.call([nama_file_mindustry_skrang[0]])
     
 else:
     print("sabar, mo update bang")
@@ -58,5 +57,19 @@ else:
     os.remove(nama_file_mindustry_skrang[0])
     print(f"file yg dihapus: {nama_file_mindustry_skrang[0]}")
 
-    
-    subprocess.call([nama_file])
+file_mindustry = [f for f in os.listdir() if "Mindustry-BE-Desktop" in f and f.endswith(".jar")]
+if file_mindustry:
+    nama_file_updated = max(file_mindustry, key=lambda f: os.path.getmtime(f))
+    print(f"Nama file yg mo dijalankan: {nama_file_updated}")
+
+    print("Game akan dijalankan dalam 3 detik...")
+    time.sleep(1)
+    print("Game akan dijalankan dalam 2 detik...")
+    time.sleep(1)
+    print("Game akan dijalankan dalam 1 detik...")
+    time.sleep(1)
+
+    subprocess.run(["java", "-jar", nama_file_updated])
+else:
+    nama_file_updated = None
+    print("Tidak ada file mindustry.")
