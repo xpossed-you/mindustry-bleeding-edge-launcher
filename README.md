@@ -21,6 +21,7 @@ python: https://www.python.org/downloads/
 java: https://www.java.com/en/download/manual.jsp
 
 if this is your first time using python, make sure to install these modules:
+
 ```pip install requests```
 requests is for fetching json
 
