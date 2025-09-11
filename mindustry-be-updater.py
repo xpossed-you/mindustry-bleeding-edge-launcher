@@ -19,10 +19,9 @@ print("                           /___/           /___/      ")
 print("mindustry launcher & updater, xpossed-you @ github")
 print()
 
+### FUNCTION ###
 
 waktu_skarang = time.time()
-
-### FUNCTION ###
 
 def cek_internet():
     """buat cek koneksi internet lah, apalagi"""
@@ -35,7 +34,7 @@ def cek_internet():
 ### EO FUNCTION ###
 
 if not cek_internet():
-    print("Koneksi internet bermasalah, update batal...")
+    print("Internet connection error...")
 
 else:
     LINK_API_BUILDMINDUSTRY = "https://api.github.com/repos/anuken/mindustrybuilds/releases/latest"
@@ -54,9 +53,9 @@ else:
 
 
     if nama_tag in file_mindustry[0]:
-        print("file skarang paling baru, langsung gas bng")
+        print("You have the latest version.")
     else:
-        print("sabar, mo update bang")
+        print("Newer version available, downloading...")
         for i in data["assets"]:
             if "Desktop" in i["name"]:
                 nama_file = i["name"]
@@ -67,32 +66,32 @@ else:
                 break
         print()
 
-        print(f"Nama tag: {nama_tag}")
-        print(f"Jumlah asset: {jumlah_asset}")
-        print(f"Waktu publsih: {waktu_publish}")
-        print(f"Link update: {link_data}")
+        print(f"Tag name: {nama_tag}")
+        print(f"Asset found: {jumlah_asset}")
+        print(f"Published on: {waktu_publish}")
+        print(f"Update URL: {link_data}")
         print((len(link_data) + 14) * "=")
-        print(f"Nama file: {nama_file}")
-        print(f"Tipe konten: {tipe_konten}")
-        print(f"Ukuran: {ukuran} mb")
-        print(f"Link file: {link_donlod}")
+        print(f"File name: {nama_file}")
+        print(f"Content type: {tipe_konten}")
+        print(f"Size: {ukuran} mb")
+        print(f"File URL: {link_donlod}")
 
-        with requests.get(link_donlod, stream=True, timeout=5) as r:
-            r.raise_for_status()
-            total_size = int(r.headers.get("content-length", 0))
+        with requests.get(link_donlod, stream=True, timeout=5) as mind_request:
+            mind_request.raise_for_status()
+            total_size = int(mind_request.headers.get("content-length", 0))
             BLOCK_SIZE = 1024  # 1 KB
 
             with tqdm(total=total_size, unit="B", unit_scale=True, desc=nama_file) as bar:
                 with open(nama_file, "wb") as f:
-                    for chunk in r.iter_content(chunk_size=BLOCK_SIZE):
+                    for chunk in mind_request.iter_content(chunk_size=BLOCK_SIZE):
                         if chunk:
                             f.write(chunk)
                             bar.update(len(chunk))
 
-        print(f"hasil download: {nama_file}")
+        print(f"{nama_file} Downloaded successfully.")
 
         os.remove(file_mindustry[0])
-        print(f"file yg dihapus: {file_mindustry[0]}")
+        print(f"{file_mindustry[0]} removed.")
 
 file_mindustry = [f for f in os.listdir() if "Mindustry-BE-Desktop" in f and f.endswith(".jar")]
 if file_mindustry:
@@ -100,18 +99,24 @@ if file_mindustry:
 
     terakhir_update = os.path.getmtime(nama_file_updated)
     days_ago = int((waktu_skarang - terakhir_update) // (60 * 60 * 24))
-    print("tanggal update terakhir:", time.strftime('%d-%m-%Y', time.localtime(terakhir_update)))
-    print(f"update terakhir: {days_ago} hari yang lalu")
+    print("Last updated date:", time.strftime('%d-%m-%Y', time.localtime(terakhir_update)))
+    print(f"{days_ago} days ago")
 
-    print(f"Nama file yg mo dijalankan: {nama_file_updated}")
+    print(f"{nama_file_updated} will be opened")
 
-    print("Game akan dijalankan dalam 3 detik...")
+    print("in 3 seconds...")
     time.sleep(1)
-    print("Game akan dijalankan dalam 2 detik...")
+    print("in 2 seconds...")
     time.sleep(1)
-    print("Game akan dijalankan dalam 1 detik...")
+    print("in 1 seconds...")
     time.sleep(1)
 
     subprocess.run(["java", "-jar", nama_file_updated], check=False)
 else:
-    print("Tidak ada file mindustry.")
+    print("No Mindustry file found, please re run the program if you have internet connection.")
+    print("If you still see this message, please report the issue to github.")
+    print("https://github.com/xpossed-you/mindustry-bleeding-edge-launcher")
+
+print("guddddbye...")
+
+# akhir file mindustry-be-updater.py
